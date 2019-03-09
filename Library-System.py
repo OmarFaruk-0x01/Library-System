@@ -111,7 +111,7 @@ class import_(QDialog,ui5):
         comboText=self.comboBox.currentText()
         if self.fileextension == 'csv':
             self.readCsv(comboText)
-        # print(self.checkBox_2.isChecked(),self.checkBox.isChecked())
+        # #print(self.checkBox_2.isChecked(),self.checkBox.isChecked())
     #########################################################################
     ############ Rrad CSV @##################################################
     def readCsv(self,tablename):
@@ -119,15 +119,15 @@ class import_(QDialog,ui5):
         self.db=sqlite3.connect("DataBases/library")
         self.crsor=self.db.cursor()
         self.crsor.execute(f"select * from {tablename}")
-        print(self.crsor.fetchall())
+        #print(self.crsor.fetchall())
         columns=[]
         rows=[]
         with open(fileName,'r',encoding="utf-8") as csvfile:
             csvRead=csv.reader(csvfile,delimiter=",")
             line=0
-            print("X")
+            #print("X")
             for row in csvRead:
-                print(row)
+                #print(row)
                 if line==0:
                     for cols in row:
                         columns.append(cols)
@@ -139,12 +139,12 @@ class import_(QDialog,ui5):
             csvfile.close()
         coll = self.crsor.execute(f"SELECT * FROM {tablename} LIMIT 0")
         columns_Name = [c[0] for c in self.crsor.description]
-        print(columns)
-        print(columns_Name)
+        #print(columns)
+        #print(columns_Name)
         if columns != columns_Name:
             QMessageBox.question(self, "Not Matching!", f"<h2>Columns are not matched!!</h2><br><h3>Please Change File. File is not comfirtable for database.</h3>", QMessageBox.Ok)
             return
-        print(rows)
+        #print(rows)
         if tablename=="Books":
             self.import_Books(rows)
         elif tablename=="Members":
@@ -176,10 +176,10 @@ class import_(QDialog,ui5):
                 self.db.commit()
             self.crsor.execute("select Book_Title, Book_Count, Book_Author, Book_Cetagory,Book_Publisher, Book_Dicription from Books")
             allBook=[tuple(map(str,i)) for i in self.crsor.fetchall()]
-            print(allBook,"a")
+            #print(allBook,"a")
             for r in data:
                 if r not in allBook and ("") not in r:
-                    print(r)
+                    #print(r)
                     self.crsor.execute("""
                 INSERT INTO Books(Book_Title, Book_Count, Book_Author, Book_Cetagory,Book_Publisher, Book_Dicription)
                 VALUES(?,?,?,?,?,?)
@@ -198,11 +198,11 @@ class import_(QDialog,ui5):
             author=[i[0] for i in self.crsor.fetchall()]
             self.crsor.execute("select Publisher_Name from Publisher")
             publisher=[i[0] for i in self.crsor.fetchall()]
-            print("enter cetagory")
-            print(cetagorisB,cetagoris)
+            #print("enter cetagory")
+            #print(cetagorisB,cetagoris)
             for ceta in cetagorisB:
                 if ceta not in cetagoris and ceta!="":
-                    print(ceta)
+                    #print(ceta)
                     self.crsor.execute("""
                 INSERT INTO Cetagorys(Cetagory_Name)
                 VALUES(?)
@@ -242,10 +242,10 @@ class import_(QDialog,ui5):
                 self.db.commit()
             self.crsor.execute("select Name,Phone,Email,Class,Section,Roll,Address from Members")
             allmembers=[tuple(map(str,i)) for i in self.crsor.fetchall()]
-            print(allmembers,"a")
+            #print(allmembers,"a")
             for r in data:
                 if r not in allmembers and ("") not in r:
-                    print(r)
+                    #print(r)
                     self.crsor.execute("""
                     INSERT INTO Members(Name,Phone,Email,Class,Section,Roll,Address)
                     VALUES(?,?,?,?,?,?,?);
@@ -262,10 +262,10 @@ class import_(QDialog,ui5):
                 self.db.commit()
             self.crsor.execute("select Cetagory_Name from Cetagorys")
             allCeta=[tuple(map(str,i)) for i in self.crsor.fetchall()]
-            print(allCeta,"a")
+            #print(allCeta,"a")
             for r in data:
                 if r not in allCeta and ("") not in r:
-                    print(r)
+                    #print(r)
                     self.crsor.execute("""
                 INSERT INTO Cetagorys(Cetagory_Name)
                 VALUES(?)
@@ -284,10 +284,10 @@ class import_(QDialog,ui5):
                 self.db.commit()
             self.crsor.execute("select Author_Name from Author")
             allaut=[tuple(map(str,i)) for i in self.crsor.fetchall()]
-            print(allaut,"a")
+            #print(allaut,"a")
             for r in data:
                 if r not in allaut and ("") not in r:
-                    print(r)
+                    #print(r)
                     self.crsor.execute("""
                 INSERT INTO Author(Author_Name)
                 VALUES(?)
@@ -306,10 +306,10 @@ class import_(QDialog,ui5):
                 self.db.commit()
             self.crsor.execute("select Publisher_Name from Publisher")
             allpub=[tuple(map(str,i)) for i in self.crsor.fetchall()]
-            print(allpub,"a")
+            #print(allpub,"a")
             for r in data:
                 if r not in allpub and ("") not in r:
-                    print(r)
+                    #print(r)
                     self.crsor.execute("""
                 INSERT INTO Publisher(Publisher_Name)
                 VALUES(?)
@@ -978,7 +978,7 @@ class MainApp(QMainWindow, ui, import_):
             sql_qure='''select * from Books where Book_Title=?'''
             self.crsor.execute(sql_qure,(search_book_title,))
             data=self.crsor.fetchone()
-            print(data)
+            #print(data)
             if data:
                 self.lineEdit_2.setText(data[1])
                 self.textEdit_2.setPlainText(data[6])
@@ -1481,7 +1481,7 @@ class MainApp(QMainWindow, ui, import_):
             sql_qure='''select * from Members where Class=? and Roll=? and Section=?;'''
             self.crsor.execute(sql_qure,(search_class,search_roll,search_section))
             data=self.crsor.fetchone()
-            print(data)
+            #print(data)
             if data:
                 self.lineEdit_12.setText(str(data[1]))
                 self.lineEdit_14.setText(str(data[2]))
